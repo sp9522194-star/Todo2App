@@ -34,9 +34,6 @@ function Todolist({navigation, theme}) {
   const [taskName, setTaskName] = useState('');
   const [date, setDate] = useState('');
 
-  // PRIORITY
-  const [priority, setPriority] = useState('Medium');
-
   const [employeeError, setEmployeeError] = useState('');
   const [taskError, setTaskError] = useState('');
   const [dateError, setDateError] = useState('');
@@ -232,7 +229,6 @@ function Todolist({navigation, theme}) {
         name: taskName.trim(),
         employee: employeeName.trim(),
         date: date,
-        priority: priority,
       };
 
       // =================================================
@@ -262,8 +258,6 @@ function Todolist({navigation, theme}) {
 
         setDate('');
 
-        setPriority('Medium');
-
         setShowPopup(true);
 
         return;
@@ -290,8 +284,6 @@ function Todolist({navigation, theme}) {
       setTaskName('');
 
       setDate('');
-
-      setPriority('Medium');
 
       setPopupType('add');
 
@@ -324,7 +316,7 @@ function Todolist({navigation, theme}) {
 
       Alert.alert(
         'Task Details',
-        `Task: ${selectedTask.name}\nEmployee: ${selectedTask.employee}\nDate: ${selectedTask.date}\nPriority: ${selectedTask.priority || 'Medium'}`,
+        `Task: ${selectedTask.name}\nEmployee: ${selectedTask.employee}\nDate: ${selectedTask.date}`,
         [
           {
             text: 'OK',
@@ -370,10 +362,6 @@ function Todolist({navigation, theme}) {
 
       setDate(
         selectedTask.date,
-      );
-
-      setPriority(
-        selectedTask.priority || 'Medium',
       );
 
       setEditingIndex(
@@ -508,9 +496,6 @@ function Todolist({navigation, theme}) {
         .includes(search) ||
       task.date
         ?.toLowerCase()
-        .includes(search) ||
-      task.priority
-        ?.toLowerCase()
         .includes(search)
     );
   });
@@ -610,28 +595,6 @@ function Todolist({navigation, theme}) {
                 },
               ]}>
               Date: {item.date}
-            </Text>
-
-          </View>
-
-          {/* PRIORITY */}
-
-          <View style={styles.infoRow}>
-
-            <Ionicons
-              name="flag-outline"
-              size={18}
-              color={theme.text}
-            />
-
-            <Text
-              style={[
-                styles.taskInfo,
-                {
-                  color: theme.text,
-                },
-              ]}>
-              Priority: {item.priority || 'Medium'}
             </Text>
 
           </View>
@@ -912,72 +875,6 @@ function Todolist({navigation, theme}) {
               }
             />
           )}
-
-          {/* =================================================
-              PRIORITY
-          ================================================= */}
-
-          <View style={styles.labelRow}>
-
-            <Ionicons
-              name="flag-outline"
-              size={20}
-              color={theme.text}
-            />
-
-            <Text
-              style={[
-                styles.label,
-                {
-                  color: theme.text,
-                },
-              ]}>
-              Task Priority
-            </Text>
-
-          </View>
-
-          <View style={styles.priorityRow}>
-
-            {['Low', 'Medium', 'High'].map(
-              item => (
-                <TouchableOpacity
-                  key={item}
-                  style={[
-                    styles.priorityButton,
-                    {
-                      backgroundColor:
-                        priority === item
-                          ? theme.button
-                          : theme.card,
-
-                      borderColor:
-                        theme.button,
-                    },
-                  ]}
-                  onPress={() =>
-                    setPriority(item)
-                  }
-                  activeOpacity={0.7}>
-
-                  <Text
-                    style={[
-                      styles.priorityText,
-                      {
-                        color:
-                          priority === item
-                            ? '#FFFFFF'
-                            : theme.text,
-                      },
-                    ]}>
-                    {item}
-                  </Text>
-
-                </TouchableOpacity>
-              ),
-            )}
-
-          </View>
 
           {/* =================================================
               ADD BUTTON
@@ -1285,12 +1182,10 @@ function Todolist({navigation, theme}) {
                         theme.text,
                     },
                   ]}>
-
                   {popupType ===
                   'edit'
                     ? 'Task Updated Successfully!'
                     : 'Task Added Successfully!'}
-
                 </Text>
 
                 <View
@@ -1307,13 +1202,11 @@ function Todolist({navigation, theme}) {
                         theme.text,
                     },
                   ]}>
-
                   {popupType ===
                   'edit'
                     ? 'Your task has been updated.'
                     : 'Your task has been added\n' +
                       'to the To-Do List.'}
-
                 </Text>
 
                 <TouchableOpacity
@@ -1467,30 +1360,6 @@ const styles = StyleSheet.create({
   dateText: {
     fontFamily: Fonts.regular,
     fontSize: FontSize.medium,
-  },
-
-  // ==================================================
-  // PRIORITY
-  // ==================================================
-
-  priorityRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 5,
-  },
-
-  priorityButton: {
-    flex: 1,
-    height: 45,
-    borderRadius: 12,
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  priorityText: {
-    fontFamily: Fonts.semiBold,
-    fontSize: FontSize.normal,
   },
 
   // ==================================================

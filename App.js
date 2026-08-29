@@ -1,10 +1,17 @@
+
 import React, {useState, useEffect} from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+} from '@react-navigation/native';
 
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 
 import Ionicons from '@react-native-vector-icons/ionicons';
 
@@ -22,6 +29,7 @@ import {lightTheme, darkTheme} from './Theme';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
 
 function BottomTabs({
   theme,
@@ -60,12 +68,6 @@ function BottomTabs({
               : 'home-outline';
           }
 
-          if (route.name === 'Todo List') {
-            iconName = focused
-              ? 'checkmark-circle'
-              : 'checkmark-circle-outline';
-          }
-
           if (route.name === 'Timeline') {
             iconName = focused
               ? 'calendar'
@@ -87,8 +89,7 @@ function BottomTabs({
           );
         },
       })}>
-      
-      {/* HOME */}
+
       <Tab.Screen name="Home">
         {props => (
           <Home
@@ -100,19 +101,7 @@ function BottomTabs({
         )}
       </Tab.Screen>
 
-      {/* TODO LIST */}
-      <Tab.Screen name="Todo List">
-        {props => (
-          <Todolist
-            {...props}
-            theme={theme}
-            tasks={tasks}
-            setTasks={setTasks}
-          />
-        )}
-      </Tab.Screen>
 
-      {/* TIMELINE */}
       <Tab.Screen name="Timeline">
         {props => (
           <Timeline
@@ -123,7 +112,7 @@ function BottomTabs({
         )}
       </Tab.Screen>
 
-      {/* PROFILE */}
+
       <Tab.Screen name="Profile">
         {props => (
           <Profile
@@ -137,7 +126,9 @@ function BottomTabs({
   );
 }
 
+
 function App() {
+
   const [darkMode, setDarkMode] = useState(false);
 
   const [tasks, setTasks] = useState([]);
@@ -146,44 +137,64 @@ function App() {
     ? darkTheme
     : lightTheme;
 
+
   const toggleTheme = () => {
-    setDarkMode(!darkMode);
+    setDarkMode(previous => !previous);
   };
 
+
   useEffect(() => {
+
     const showWelcomeNotification = async () => {
-      await notifee.requestPermission();
 
-      await notifee.createChannel({
-        id: 'default',
-        name: 'Default Channel',
-        importance: AndroidImportance.HIGH,
-      });
+      try {
 
-      await notifee.displayNotification({
-        title: 'Welcome 👋',
-        body: 'Welcome to your To-Do List App!',
-        android: {
-          channelId: 'default',
+        await notifee.requestPermission();
 
-          pressAction: {
-            id: 'default',
+        await notifee.createChannel({
+          id: 'default',
+          name: 'Default Channel',
+          importance: AndroidImportance.HIGH,
+        });
+
+        await notifee.displayNotification({
+          title: 'Welcome 👋',
+          body: 'Welcome to your To-Do List App!',
+
+          android: {
+            channelId: 'default',
+
+            pressAction: {
+              id: 'default',
+            },
           },
-        },
-      });
+        });
+
+      } catch (error) {
+
+        console.log(
+          'Notification Error:',
+          error,
+        );
+
+      }
+
     };
 
     showWelcomeNotification();
+
   }, []);
+
 
   return (
     <NavigationContainer>
+
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
         }}>
 
-        {/* WELCOME SCREEN */}
+
         <Stack.Screen name="Welcome">
           {props => (
             <Welcome
@@ -195,7 +206,7 @@ function App() {
           )}
         </Stack.Screen>
 
-        {/* MAIN TABS */}
+
         <Stack.Screen name="MainTabs">
           {props => (
             <BottomTabs
@@ -209,9 +220,23 @@ function App() {
           )}
         </Stack.Screen>
 
+
+        <Stack.Screen name="TodoList">
+          {props => (
+            <Todolist
+              {...props}
+              theme={theme}
+              tasks={tasks}
+              setTasks={setTasks}
+            />
+          )}
+        </Stack.Screen>
+
       </Stack.Navigator>
+
     </NavigationContainer>
   );
 }
+
 
 export default App;
