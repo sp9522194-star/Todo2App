@@ -644,7 +644,7 @@ function Todolist({navigation, theme}) {
                   color: theme.text,
                 },
               ]}>
-              MY TO-DO LIST
+            My Tasks
             </Text>
 
             <TouchableOpacity
