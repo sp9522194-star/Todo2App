@@ -644,7 +644,7 @@ function Todolist({navigation, theme}) {
                   color: theme.text,
                 },
               ]}>
-             task list
+             
             My Tasks
             </Text>
 
